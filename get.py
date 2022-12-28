@@ -24,6 +24,8 @@ url="https://dev.azure.com/go-gl-pr-migfactory-axa365/_apis/wit/workitems?ids=41
 # display only selected fields
 # url="https://dev.azure.com/go-gl-pr-migfactory-axa365/_apis/wit/workitems?ids=40529&fields=System.Id,System.Title&api-version=5.0"
 
+# run the query that was created in ADO
+# url = "https://dev.azure.com/go-gl-pr-migfactory-axa365/Migration_Factory/_apis/wit/wiql/bfb63f49-536a-4998-b62b-dba5ecdd1fde?api-version=5.1"
 
 headers = {
     'Accept': 'application/json',
