@@ -42,4 +42,9 @@ response = requests.get(
 )
 
 
-print(response.text)
+# print(response.text)
+
+# extracting ids from the list
+list_of_tasks = response.json()["workItems"]
+for task in list_of_tasks:
+    print(task["id"])
