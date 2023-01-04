@@ -1,4 +1,5 @@
 # api calls to DevOps
+# helps to get applications from Azure DevOps
 
 import requests
 import base64
@@ -8,7 +9,6 @@ import pandas as pd
 # token_for_azure token
 # read only
 pat = '***'
-
 
 authorization = str(base64.b64encode(bytes(':'+pat, 'ascii')), 'ascii')
 
@@ -59,6 +59,7 @@ def save_working_item_into_data_frame(working_item_id, df_applications):
     return df_applications
 
 
+
 def show_children(parent_id):
     """
     Generates list of children_ids based on parent_id
@@ -75,7 +76,7 @@ def show_children(parent_id):
         headers=headers,
     )
 
-    # where ids of children will be stored
+    # list where ids of children will be stored
     list_of_children = []
 
     # working item Relations
@@ -105,28 +106,28 @@ response = requests.get(
     headers=headers,
 )
 
-# list(list of dictionaries) of all the applications
-# applications = response.json()["workItems"][i]["id"]
-n = 2
-applications = response.json()["workItems"]#[i]["id"]
+# applications is the list(list of dictionaries) of all the applications
+applications = response.json()["workItems"]
+
+# n is number of applications
+# scrawling one application takes about 25 seconds
+n = 2 
 applications = applications[:n]
-# print(applications)
 
-
+# go through all(n) the apps
 for i in range(len(applications)):
-    # go through all(n) the apps
-    # wi_id = response.json()["workItems"][i]["id"]
-    # print(application)
     application_id = applications[i]["id"]
     feature_ids = show_children(application_id)
+    # go through childs of application (is feature)
     for feature_id in feature_ids:
         user_stories = show_children(feature_id)
+        # go through childs of features (user_stories
         for user_story in user_stories:
             tasks = show_children(user_story)
+            # go through childs of user_stories (tasks)
             for task in tasks:
                 df_applications = save_working_item_into_data_frame(task, df_applications)
-                # print(task)
-                # df_applications.to_csv('file_name.csv')
     # print(df_applications)
 
+# saves to csv file
 df_applications.to_csv('file_name_2.csv')
